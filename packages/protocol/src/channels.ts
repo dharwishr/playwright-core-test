@@ -1489,6 +1489,7 @@ export type BrowserContextInitializer = {
   tracing: TracingChannel,
 };
 export interface BrowserContextEventTarget {
+  on(event: 'onAction', callback: (params: BrowserContextOnActionEvent) => void): this;
   on(event: 'bindingCall', callback: (params: BrowserContextBindingCallEvent) => void): this;
   on(event: 'console', callback: (params: BrowserContextConsoleEvent) => void): this;
   on(event: 'close', callback: (params: BrowserContextCloseEvent) => void): this;
@@ -1540,6 +1541,9 @@ export interface BrowserContextChannel extends BrowserContextEventTarget, EventT
   clockSetFixedTime(params: BrowserContextClockSetFixedTimeParams, metadata?: CallMetadata): Promise<BrowserContextClockSetFixedTimeResult>;
   clockSetSystemTime(params: BrowserContextClockSetSystemTimeParams, metadata?: CallMetadata): Promise<BrowserContextClockSetSystemTimeResult>;
 }
+export type BrowserContextOnActionEvent = {
+  action: string,
+};
 export type BrowserContextBindingCallEvent = {
   binding: BindingCallChannel,
 };
@@ -1904,6 +1908,7 @@ export type BrowserContextClockSetSystemTimeOptions = {
 export type BrowserContextClockSetSystemTimeResult = void;
 
 export interface BrowserContextEvents {
+  'onAction': BrowserContextOnActionEvent;
   'bindingCall': BrowserContextBindingCallEvent;
   'console': BrowserContextConsoleEvent;
   'close': BrowserContextCloseEvent;

@@ -77,6 +77,10 @@ export class ContextRecorder extends EventEmitter {
 
     this._collection = new RecorderCollection(this._pageAliases);
     this._collection.on('change', (actions: actions.ActionInContext[]) => {
+      /// SMARTTESTER STEP 7: Emit the onAction event when any action occurred
+      if(actions.length !== 0){
+        this._context.emit(BrowserContext.Events.OnAction, actions[actions.length - 1]);
+      }
       this._recorderSources = [];
       for (const languageGenerator of this._orderedLanguages) {
         const { header, footer, actionTexts, text } = generateCode(actions, languageGenerator, languageGeneratorOptions);

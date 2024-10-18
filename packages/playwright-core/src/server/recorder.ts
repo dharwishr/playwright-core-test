@@ -53,8 +53,9 @@ export class Recorder implements InstrumentationListener, IRecorder {
     return await Recorder.show('actions', context, recorderAppFactory, params);
   }
 
-  static showInspectorNoReply(context: BrowserContext, recorderAppFactory: IRecorderAppFactory) {
-    Recorder.showInspector(context, {}, recorderAppFactory).catch(() => {});
+  static showInspectorNoReply(context: BrowserContext, recorderAppFactory: IRecorderAppFactory) : Promise<void | Recorder>{
+    /// SMARTTESTER STEP 3: Create and return the Recorder instance
+    return Recorder.showInspector(context, {}, recorderAppFactory).catch(() => {});
   }
 
   static show(codegenMode: 'actions' | 'trace-events', context: BrowserContext, recorderAppFactory: IRecorderAppFactory, params: channels.BrowserContextEnableRecorderParams): Promise<Recorder> {

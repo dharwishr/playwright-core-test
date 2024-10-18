@@ -87,6 +87,11 @@ export class BrowserContext extends ChannelOwner<channels.BrowserContextChannel>
     this.request = APIRequestContext.from(initializer.requestContext);
     this.clock = new Clock(this);
 
+    /// SMARTTESTER STEP 9: Listen for the 'OnAction' event from the server and emit it to the user code
+    this._channel.on(Events.BrowserContext.OnAction, (data:Object) => {
+      this.emit(Events.BrowserContext.OnAction, data);
+    });
+
     this._channel.on('bindingCall', ({ binding }) => this._onBinding(BindingCall.from(binding)));
     this._channel.on('close', () => this._onClose());
     this._channel.on('page', ({ page }) => this._onPage(Page.from(page)));

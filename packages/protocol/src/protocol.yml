@@ -1293,6 +1293,11 @@ BrowserContext:
 
   events:
 
+    # SMARTTESTER STEP 1: // CREATE A NEW EVENT FOR LISTEING RECORD ACTIONS
+    onAction:
+      parameters:
+        action: string
+
     bindingCall:
       parameters:
         binding: BindingCall

@@ -63,6 +63,8 @@ export abstract class BrowserContext extends SdkObject {
     RequestContinued: 'requestcontinued',
     BeforeClose: 'beforeclose',
     VideoStarted: 'videostarted',
+    /// SMARTTESTER STEP 5: Register a new event for the action callback
+    OnAction: 'onAction',
   };
 
   readonly _timeoutSettings = new TimeoutSettings();
@@ -139,7 +141,10 @@ export abstract class BrowserContext extends SdkObject {
 
     this._debugger.on(Debugger.Events.PausedStateChanged, () => {
       if (this._debugger.isPaused())
-        Recorder.showInspectorNoReply(this, RecorderApp.factory(this));
+        Recorder.showInspectorNoReply(this, RecorderApp.factory(this)).then((recorder) => {
+            /// SMARTTESTER STEP 4: After creating the recorder app, set the mode to 'recording'
+          recorder?.setMode('recording');
+        });
     });
 
     if (debugMode() === 'console')

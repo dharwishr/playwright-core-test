@@ -109,7 +109,8 @@ export class RecorderApp extends EventEmitter implements IRecorderApp {
       windowPosition: { x: 1020, y: 10 },
       persistentContextOptions: {
         noDefaultViewport: true,
-        headless: !!process.env.PWTEST_CLI_HEADLESS || (isUnderTest() && !headed),
+        /// SMARTTESTER STEP 2: Ensure the code generator runs in headless mode (hidden)
+        headless: true,//!!process.env.PWTEST_CLI_HEADLESS || (isUnderTest() && !headed),
         useWebSocket: isUnderTest(),
         handleSIGINT: false,
         executablePath: inspectedContext._browser.options.isChromium ? inspectedContext._browser.options.customExecutablePath : undefined,

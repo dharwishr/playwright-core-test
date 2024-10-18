@@ -81,6 +81,12 @@ export class BrowserContextDispatcher extends Dispatcher<BrowserContext, channel
         onVideo(video.artifact);
     }
 
+    /// SMARTTESTER STEP 8: Listen for the 'onAction' event and forward it to the client-side
+    this.addObjectListener(BrowserContext.Events.OnAction, (data) => {
+      let action:string =JSON.stringify({"name" : data.action.name,"selector":data.action.selector}) ;
+      this._dispatchEvent(BrowserContext.Events.OnAction,{ action });
+    });
+
     for (const page of context.pages())
       this._dispatchEvent('page', { page: PageDispatcher.from(this, page) });
     this.addObjectListener(BrowserContext.Events.Page, page => {
