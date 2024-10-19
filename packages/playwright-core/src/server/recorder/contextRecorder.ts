@@ -79,7 +79,10 @@ export class ContextRecorder extends EventEmitter {
     this._collection.on('change', (actions: actions.ActionInContext[]) => {
       /// SMARTTESTER STEP 7: Emit the onAction event when any action occurred
       if(actions.length !== 0){
-        this._context.emit(BrowserContext.Events.OnAction, actions[actions.length - 1]);
+        const latestAction = actions[actions.length - 1];
+        if(latestAction.endTime !== undefined){
+          this._context.emit(BrowserContext.Events.OnAction, latestAction);
+        }
       }
       this._recorderSources = [];
       for (const languageGenerator of this._orderedLanguages) {
