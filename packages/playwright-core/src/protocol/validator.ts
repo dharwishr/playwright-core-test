@@ -804,8 +804,11 @@ scheme.BrowserContextInitializer = tObject({
   requestContext: tChannel(['APIRequestContext']),
   tracing: tChannel(['Tracing']),
 });
-scheme.BrowserContextOnActionEvent = tObject({
-  action: tString,
+scheme.BrowserContextOnactionEvent = tObject({
+  action: tOptional(tString),
+  selector: tOptional(tString),
+  text: tOptional(tString),
+  url: tOptional(tString),
 });
 scheme.BrowserContextBindingCallEvent = tObject({
   binding: tChannel(['BindingCall']),

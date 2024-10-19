@@ -83,8 +83,11 @@ export class BrowserContextDispatcher extends Dispatcher<BrowserContext, channel
 
     /// SMARTTESTER STEP 8: Listen for the 'onAction' event and forward it to the client-side
     this.addObjectListener(BrowserContext.Events.OnAction, (data) => {
-      let action:string =JSON.stringify({"name" : data.action.name,"selector":data.action.selector}) ;
-      this._dispatchEvent(BrowserContext.Events.OnAction,{ action });
+      let action:string|undefined = data.action.name;
+      let selector:string|undefined = data.action.selector;
+      let text:string|undefined = data.action.text;
+      let url:string|undefined = data.action.url;
+      this._dispatchEvent(BrowserContext.Events.OnAction,{ action, selector, text, url });
     });
 
     for (const page of context.pages())

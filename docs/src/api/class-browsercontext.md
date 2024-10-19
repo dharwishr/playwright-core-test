@@ -103,6 +103,22 @@ context.BackgroundPage += (_, backgroundPage) =>
 
 Playwright has ability to mock clock and passage of time.
 
+## event: BrowserContext.onAction
+* since: v1.smarttester
+- argument: <[Object]>
+
+Emitted when any action occurs on the record.
+
+**Usage**
+
+```js
+  const page:Page = await browser.newPage();
+
+  page.context().on('onaction', (data:Object) => {
+      console.log('onaction', data);
+  });
+```
+
 ## event: BrowserContext.close
 * since: v1.8
 - argument: <[BrowserContext]>

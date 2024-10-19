@@ -64,7 +64,7 @@ export abstract class BrowserContext extends SdkObject {
     BeforeClose: 'beforeclose',
     VideoStarted: 'videostarted',
     /// SMARTTESTER STEP 5: Register a new event for the action callback
-    OnAction: 'onAction',
+    OnAction: 'onaction',
   };
 
   readonly _timeoutSettings = new TimeoutSettings();

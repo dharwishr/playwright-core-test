@@ -8241,6 +8241,22 @@ export interface BrowserContext {
   on(event: 'dialog', listener: (dialog: Dialog) => any): this;
 
   /**
+   * Emitted when any action occurs on the record.
+   *
+   * **Usage**
+   *
+   * ```js
+   *   const page:Page = await browser.newPage();
+   *
+   *   page.context().on('onaction', (data:Object) => {
+   *       console.log('onaction', data);
+   *   });
+   * ```
+   *
+   */
+  on(event: 'onaction', listener: (object: Object) => any): this;
+
+  /**
    * The event is emitted when a new Page is created in the BrowserContext. The page may still be loading. The event
    * will also fire for popup pages. See also
    * [page.on('popup')](https://playwright.dev/docs/api/class-page#page-event-popup) to receive events about popups
@@ -8344,6 +8360,11 @@ export interface BrowserContext {
   /**
    * Adds an event listener that will be automatically removed after it is triggered once. See `addListener` for more information about this event.
    */
+  once(event: 'onaction', listener: (object: Object) => any): this;
+
+  /**
+   * Adds an event listener that will be automatically removed after it is triggered once. See `addListener` for more information about this event.
+   */
   once(event: 'page', listener: (page: Page) => any): this;
 
   /**
@@ -8438,6 +8459,22 @@ export interface BrowserContext {
    *
    */
   addListener(event: 'dialog', listener: (dialog: Dialog) => any): this;
+
+  /**
+   * Emitted when any action occurs on the record.
+   *
+   * **Usage**
+   *
+   * ```js
+   *   const page:Page = await browser.newPage();
+   *
+   *   page.context().on('onaction', (data:Object) => {
+   *       console.log('onaction', data);
+   *   });
+   * ```
+   *
+   */
+  addListener(event: 'onaction', listener: (object: Object) => any): this;
 
   /**
    * The event is emitted when a new Page is created in the BrowserContext. The page may still be loading. The event
@@ -8543,6 +8580,11 @@ export interface BrowserContext {
   /**
    * Removes an event listener added by `on` or `addListener`.
    */
+  removeListener(event: 'onaction', listener: (object: Object) => any): this;
+
+  /**
+   * Removes an event listener added by `on` or `addListener`.
+   */
   removeListener(event: 'page', listener: (page: Page) => any): this;
 
   /**
@@ -8594,6 +8636,11 @@ export interface BrowserContext {
    * Removes an event listener added by `on` or `addListener`.
    */
   off(event: 'dialog', listener: (dialog: Dialog) => any): this;
+
+  /**
+   * Removes an event listener added by `on` or `addListener`.
+   */
+  off(event: 'onaction', listener: (object: Object) => any): this;
 
   /**
    * Removes an event listener added by `on` or `addListener`.
@@ -8692,6 +8739,22 @@ export interface BrowserContext {
    *
    */
   prependListener(event: 'dialog', listener: (dialog: Dialog) => any): this;
+
+  /**
+   * Emitted when any action occurs on the record.
+   *
+   * **Usage**
+   *
+   * ```js
+   *   const page:Page = await browser.newPage();
+   *
+   *   page.context().on('onaction', (data:Object) => {
+   *       console.log('onaction', data);
+   *   });
+   * ```
+   *
+   */
+  prependListener(event: 'onaction', listener: (object: Object) => any): this;
 
   /**
    * The event is emitted when a new Page is created in the BrowserContext. The page may still be loading. The event
@@ -9396,6 +9459,22 @@ export interface BrowserContext {
    *
    */
   waitForEvent(event: 'dialog', optionsOrPredicate?: { predicate?: (dialog: Dialog) => boolean | Promise<boolean>, timeout?: number } | ((dialog: Dialog) => boolean | Promise<boolean>)): Promise<Dialog>;
+
+  /**
+   * Emitted when any action occurs on the record.
+   *
+   * **Usage**
+   *
+   * ```js
+   *   const page:Page = await browser.newPage();
+   *
+   *   page.context().on('onaction', (data:Object) => {
+   *       console.log('onaction', data);
+   *   });
+   * ```
+   *
+   */
+  waitForEvent(event: 'onaction', optionsOrPredicate?: { predicate?: (object: Object) => boolean | Promise<boolean>, timeout?: number } | ((object: Object) => boolean | Promise<boolean>)): Promise<Object>;
 
   /**
    * The event is emitted when a new Page is created in the BrowserContext. The page may still be loading. The event

@@ -49,7 +49,7 @@ export const Events = {
     RequestFailed: 'requestfailed',
     RequestFinished: 'requestfinished',
     /// SMARTTESTER STEP 6: Register the onAction event also on the client-side BrowserContext events
-    OnAction: 'onAction',
+    OnAction: 'onaction',
   },
 
   BrowserServer: {

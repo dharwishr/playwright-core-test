@@ -1294,9 +1294,12 @@ BrowserContext:
   events:
 
     # SMARTTESTER STEP 1: // CREATE A NEW EVENT FOR LISTEING RECORD ACTIONS
-    onAction:
+    onaction:
       parameters:
-        action: string
+        action: string?
+        selector: string?
+        text: string?
+        url: string?
 
     bindingCall:
       parameters:
