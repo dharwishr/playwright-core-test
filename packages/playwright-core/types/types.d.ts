@@ -8241,7 +8241,11 @@ export interface BrowserContext {
   on(event: 'dialog', listener: (dialog: Dialog) => any): this;
 
   /**
-   * Emitted when any action occurs on the record.
+   * Emits when any action is performed during recording. Below are the possible keys for the parameter object:
+   * - `action`: Possible values are "click", "fill", "navigate".
+   * - `selector`: The selector for the HTML element. Available if the action is "click" or "fill".
+   * - `text`: The text entered in a text field. Available if the action is "fill".
+   * - `url`: The URL the page navigated to. Available if the action is "navigate".
    *
    * **Usage**
    *
@@ -8461,7 +8465,11 @@ export interface BrowserContext {
   addListener(event: 'dialog', listener: (dialog: Dialog) => any): this;
 
   /**
-   * Emitted when any action occurs on the record.
+   * Emits when any action is performed during recording. Below are the possible keys for the parameter object:
+   * - `action`: Possible values are "click", "fill", "navigate".
+   * - `selector`: The selector for the HTML element. Available if the action is "click" or "fill".
+   * - `text`: The text entered in a text field. Available if the action is "fill".
+   * - `url`: The URL the page navigated to. Available if the action is "navigate".
    *
    * **Usage**
    *
@@ -8741,7 +8749,11 @@ export interface BrowserContext {
   prependListener(event: 'dialog', listener: (dialog: Dialog) => any): this;
 
   /**
-   * Emitted when any action occurs on the record.
+   * Emits when any action is performed during recording. Below are the possible keys for the parameter object:
+   * - `action`: Possible values are "click", "fill", "navigate".
+   * - `selector`: The selector for the HTML element. Available if the action is "click" or "fill".
+   * - `text`: The text entered in a text field. Available if the action is "fill".
+   * - `url`: The URL the page navigated to. Available if the action is "navigate".
    *
    * **Usage**
    *
@@ -9461,7 +9473,11 @@ export interface BrowserContext {
   waitForEvent(event: 'dialog', optionsOrPredicate?: { predicate?: (dialog: Dialog) => boolean | Promise<boolean>, timeout?: number } | ((dialog: Dialog) => boolean | Promise<boolean>)): Promise<Dialog>;
 
   /**
-   * Emitted when any action occurs on the record.
+   * Emits when any action is performed during recording. Below are the possible keys for the parameter object:
+   * - `action`: Possible values are "click", "fill", "navigate".
+   * - `selector`: The selector for the HTML element. Available if the action is "click" or "fill".
+   * - `text`: The text entered in a text field. Available if the action is "fill".
+   * - `url`: The URL the page navigated to. Available if the action is "navigate".
    *
    * **Usage**
    *

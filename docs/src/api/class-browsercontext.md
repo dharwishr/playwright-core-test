@@ -107,7 +107,11 @@ Playwright has ability to mock clock and passage of time.
 * since: v1.smarttester
 - argument: <[Object]>
 
-Emitted when any action occurs on the record.
+Emits when any action is performed during recording. Below are the possible keys for the parameter object:
+* `action`: Possible values are "click", "fill", "navigate".
+* `selector`: The selector for the HTML element. Available if the action is "click" or "fill".
+* `text`: The text entered in a text field. Available if the action is "fill".
+* `url`: The URL the page navigated to. Available if the action is "navigate".
 
 **Usage**
 
