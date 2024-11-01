@@ -24,21 +24,21 @@ import type { CallLog, Mode, Source } from '@recorder/recorderTypes';
 import { isUnderTest } from '../../utils';
 import { mime } from '../../utilsBundle';
 import { syncLocalStorageWithSettings } from '../launchApp';
-import type { BrowserContext } from '../browserContext';
+import { BrowserContext } from '../browserContext';
 import { launchApp } from '../launchApp';
 import type { IRecorder, IRecorderApp, IRecorderAppFactory } from './recorderFrontend';
 import type * as actions from '@recorder/actions';
 
 export class EmptyRecorderApp extends EventEmitter implements IRecorderApp {
   wsEndpointForTest: undefined;
-  async close(): Promise<void> {}
-  async setPaused(paused: boolean): Promise<void> {}
-  async setMode(mode: Mode): Promise<void> {}
-  async setRunningFile(file: string | undefined): Promise<void> {}
-  async setSelector(selector: string, userGesture?: boolean): Promise<void> {}
-  async updateCallLogs(callLogs: CallLog[]): Promise<void> {}
-  async setSources(sources: Source[]): Promise<void> {}
-  async setActions(actions: actions.ActionInContext[], sources: Source[]): Promise<void> {}
+  async close(): Promise<void> { }
+  async setPaused(paused: boolean): Promise<void> { }
+  async setMode(mode: Mode): Promise<void> { }
+  async setRunningFile(file: string | undefined): Promise<void> { }
+  async setSelector(selector: string, userGesture?: boolean): Promise<void> { }
+  async updateCallLogs(callLogs: CallLog[]): Promise<void> { }
+  async setSources(sources: Source[]): Promise<void> { }
+  async setActions(actions: actions.ActionInContext[], sources: Source[]): Promise<void> { }
 }
 
 export class RecorderApp extends EventEmitter implements IRecorderApp {
@@ -46,12 +46,15 @@ export class RecorderApp extends EventEmitter implements IRecorderApp {
   readonly wsEndpointForTest: string | undefined;
   private _recorder: IRecorder;
 
-  constructor(recorder: IRecorder, page: Page, wsEndpoint: string | undefined) {
+  private _inspectedContext: BrowserContext | undefined;
+
+  constructor(recorder: IRecorder, page: Page, wsEndpoint: string | undefined, inspectedContext: BrowserContext | undefined) {
     super();
     this.setMaxListeners(0);
     this._recorder = recorder;
     this._page = page;
     this.wsEndpointForTest = wsEndpoint;
+    this._inspectedContext = inspectedContext;
   }
 
   async close() {
@@ -75,7 +78,7 @@ export class RecorderApp extends EventEmitter implements IRecorderApp {
           ],
           body: buffer.toString('base64'),
           isBase64: true
-        }).catch(() => {});
+        }).catch(() => { });
       });
       return true;
     });
@@ -84,7 +87,7 @@ export class RecorderApp extends EventEmitter implements IRecorderApp {
 
     this._page.once('close', () => {
       this.emit('close');
-      this._page.context().close({ reason: 'Recorder window closed' }).catch(() => {});
+      this._page.context().close({ reason: 'Recorder window closed' }).catch(() => { });
     });
 
     const mainFrame = this._page.mainFrame();
@@ -121,7 +124,7 @@ export class RecorderApp extends EventEmitter implements IRecorderApp {
       await context._browser._defaultContext!._loadDefaultContextAsIs(progress);
     });
 
-    const result = new RecorderApp(recorder, page, context._browser.options.wsEndpoint);
+    const result = new RecorderApp(recorder, page, context._browser.options.wsEndpoint, inspectedContext);
     await result._init();
     return result;
   }
@@ -129,25 +132,25 @@ export class RecorderApp extends EventEmitter implements IRecorderApp {
   async setMode(mode: Mode): Promise<void> {
     await this._page.mainFrame().evaluateExpression(((mode: Mode) => {
       window.playwrightSetMode(mode);
-    }).toString(), { isFunction: true }, mode).catch(() => {});
+    }).toString(), { isFunction: true }, mode).catch(() => { });
   }
 
   async setRunningFile(file: string | undefined): Promise<void> {
     await this._page.mainFrame().evaluateExpression(((file: string) => {
       window.playwrightSetRunningFile(file);
-    }).toString(), { isFunction: true }, file).catch(() => {});
+    }).toString(), { isFunction: true }, file).catch(() => { });
   }
 
   async setPaused(paused: boolean): Promise<void> {
     await this._page.mainFrame().evaluateExpression(((paused: boolean) => {
       window.playwrightSetPaused(paused);
-    }).toString(), { isFunction: true }, paused).catch(() => {});
+    }).toString(), { isFunction: true }, paused).catch(() => { });
   }
 
   async setSources(sources: Source[]): Promise<void> {
     await this._page.mainFrame().evaluateExpression(((sources: Source[]) => {
       window.playwrightSetSources(sources);
-    }).toString(), { isFunction: true }, sources).catch(() => {});
+    }).toString(), { isFunction: true }, sources).catch(() => { });
 
     // Testing harness for runCLI mode.
     if (process.env.PWTEST_CLI_IS_UNDER_TEST && sources.length) {
@@ -161,6 +164,12 @@ export class RecorderApp extends EventEmitter implements IRecorderApp {
 
   async setSelector(selector: string, userGesture?: boolean): Promise<void> {
     if (userGesture) {
+      if (this._recorder?.mode() === 'getText') {
+        this._inspectedContext?.emit(BrowserContext.Events.OnAction, { frame: { pageAlias: 'page' }, action: { name: 'gettext', selector: selector } });
+      } else {
+        this._inspectedContext?.emit(BrowserContext.Events.OnAction, { frame: { pageAlias: 'page' }, action: { name: 'inspecting', selector: selector } });
+      }
+
       if (this._recorder?.mode() === 'inspecting') {
         this._recorder.setMode('standby');
         this._page.bringToFront();
@@ -170,12 +179,12 @@ export class RecorderApp extends EventEmitter implements IRecorderApp {
     }
     await this._page.mainFrame().evaluateExpression(((data: { selector: string, userGesture?: boolean }) => {
       window.playwrightSetSelector(data.selector, data.userGesture);
-    }).toString(), { isFunction: true }, { selector, userGesture }).catch(() => {});
+    }).toString(), { isFunction: true }, { selector, userGesture }).catch(() => { });
   }
 
   async updateCallLogs(callLogs: CallLog[]): Promise<void> {
     await this._page.mainFrame().evaluateExpression(((callLogs: CallLog[]) => {
       window.playwrightUpdateLogs(callLogs);
-    }).toString(), { isFunction: true }, callLogs).catch(() => {});
+    }).toString(), { isFunction: true }, callLogs).catch(() => { });
   }
 }

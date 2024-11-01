@@ -83,11 +83,13 @@ export class BrowserContextDispatcher extends Dispatcher<BrowserContext, channel
 
     /// SMARTTESTER STEP 8: Listen for the 'onAction' event and forward it to the client-side
     this.addObjectListener(BrowserContext.Events.OnAction, (data) => {
-      let action:string|undefined = data.action.name;
-      let selector:string|undefined = data.action.selector;
-      let text:string|undefined = data.action.text;
-      let url:string|undefined = data.action.url;
-      this._dispatchEvent(BrowserContext.Events.OnAction,{ action, selector, text, url });
+      let pageAlias: string | undefined = data.frame.pageAlias;
+      let action: string | undefined = data.action.name;
+      let selector: string | undefined = data.action.selector;
+      let text: string | undefined = data.action.text;
+      let url: string | undefined = data.action.url;
+      let clickCount: number | undefined = data.action.clickCount;
+      this._dispatchEvent(BrowserContext.Events.OnAction, { pageAlias, action, selector, text, url, clickCount });
     });
 
     for (const page of context.pages())
@@ -119,7 +121,7 @@ export class BrowserContextDispatcher extends Dispatcher<BrowserContext, channel
       if (this._shouldDispatchEvent(dialog.page(), 'dialog'))
         this._dispatchEvent('dialog', { dialog: new DialogDispatcher(this, dialog) });
       else
-        dialog.close().catch(() => {});
+        dialog.close().catch(() => { });
     });
 
     if (context._browser.options.name === 'chromium') {
@@ -130,7 +132,7 @@ export class BrowserContextDispatcher extends Dispatcher<BrowserContext, channel
         this._dispatchEvent('serviceWorker', { worker: new WorkerDispatcher(this, serviceWorker) });
       this.addObjectListener(CRBrowserContext.CREvents.ServiceWorker, serviceWorker => this._dispatchEvent('serviceWorker', { worker: new WorkerDispatcher(this, serviceWorker) }));
     }
-    this.addObjectListener(BrowserContext.Events.Request, (request: Request) =>  {
+    this.addObjectListener(BrowserContext.Events.Request, (request: Request) => {
       // Create dispatcher, if:
       // - There are listeners to the requests.
       // - We are redirected from a reported request so that redirectedTo was updated on client.
@@ -386,6 +388,6 @@ export class BrowserContextDispatcher extends Dispatcher<BrowserContext, channel
   override _onDispose() {
     // Avoid protocol calls for the closed context.
     if (!this._context.isClosingOrClosed())
-      this._context.setRequestInterceptor(undefined).catch(() => {});
+      this._context.setRequestInterceptor(undefined).catch(() => { });
   }
 }

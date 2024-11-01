@@ -1542,10 +1542,12 @@ export interface BrowserContextChannel extends BrowserContextEventTarget, EventT
   clockSetSystemTime(params: BrowserContextClockSetSystemTimeParams, metadata?: CallMetadata): Promise<BrowserContextClockSetSystemTimeResult>;
 }
 export type BrowserContextOnactionEvent = {
+  pageAlias?: string,
   action?: string,
   selector?: string,
   text?: string,
   url?: string,
+  clickCount?: number,
 };
 export type BrowserContextBindingCallEvent = {
   binding: BindingCallChannel,

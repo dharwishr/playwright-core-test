@@ -805,10 +805,12 @@ scheme.BrowserContextInitializer = tObject({
   tracing: tChannel(['Tracing']),
 });
 scheme.BrowserContextOnactionEvent = tObject({
+  pageAlias: tOptional(tString),
   action: tOptional(tString),
   selector: tOptional(tString),
   text: tOptional(tString),
   url: tOptional(tString),
+  clickCount: tOptional(tNumber),
 });
 scheme.BrowserContextBindingCallEvent = tObject({
   binding: tChannel(['BindingCall']),

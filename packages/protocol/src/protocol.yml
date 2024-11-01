@@ -1296,10 +1296,12 @@ BrowserContext:
     # SMARTTESTER STEP 1: // CREATE A NEW EVENT FOR LISTEING RECORD ACTIONS
     onaction:
       parameters:
+        pageAlias: string?
         action: string?
         selector: string?
         text: string?
         url: string?
+        clickCount: number?
 
     bindingCall:
       parameters:

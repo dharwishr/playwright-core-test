@@ -35,7 +35,7 @@ export function applyTheme() {
     document.body.classList.add('inactive');
   }, false);
 
-  const currentTheme = settings.getString('theme', 'light-mode');
+  const currentTheme = settings.getString('theme', 'dark-mode');
   const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
   if (currentTheme === 'dark-mode' || prefersDarkScheme.matches)
     document.body.classList.add('dark-mode');

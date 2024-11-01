@@ -25,6 +25,8 @@ export type Mode =
   | 'assertingText'
   | 'recording-inspecting'
   | 'standby'
+  // SMARTTESTER new mode for get text
+  | 'getText'
   | 'assertingVisibility'
   | 'assertingValue'
   | 'assertingSnapshot';
